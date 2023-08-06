@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native'
 import { updatePostLike } from '../service/PostService'
 
 export default function Post({creator,CreatedAt,image,tags,title,desc,likes,comments,creatorId,_id}:any) {
-    const {user,isLogin,setUser,setIsLogin} = useContext(Mycontext)
+    const {user,isLogin,setUser,setIsLogin,setLoading} = useContext(Mycontext)
 
   return (
     <View style={styles.container}>
@@ -32,7 +32,10 @@ export default function Post({creator,CreatedAt,image,tags,title,desc,likes,comm
             </View>
 
             <View style={{flexDirection:'row',alignItems:'center',gap:10}}>
-                <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={()=>updatePostLike(_id)}>
+                <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={()=>{
+                    setLoading(true)
+                    updatePostLike(_id)
+                    setLoading(false)}}>
 
                     {likes.includes(user?.user?.id)?<Icon name='like1' size={20} color={'blue'}/>:
                 <Icon name='like2' size={20} color={'blue'}/>}
