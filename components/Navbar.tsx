@@ -7,42 +7,40 @@ import Login from '../pages/Login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Navbar() {
-    const {user,isLogin,setUser,setIsLogin} = useContext(Mycontext)
-    const navigation=useNavigation()
-    function logout(){
-setUser({})
-setIsLogin(false)
-AsyncStorage.clear()
-navigation.navigate('Home')
-    }
+  const { user, isLogin, setUser, setIsLogin,drawer } = useContext(Mycontext)
+
   return (
     <View style={styles.container}>
-        <View style={{flexDirection:'row',alignItems:'center'}}>
-        <Icon name="menu" size={30} color="white" />
-      <Text>Navbar</Text>
-        </View>
-        {isLogin?
-        <View style={{flexDirection:'row',alignItems:'center',gap:5}}>
-            <Text>{user.user.name}</Text>
-            <TouchableOpacity onPress={logout}>
-            <Text>Signout</Text>
-            </TouchableOpacity>
-        </View>
-        :<TouchableOpacity onPress={()=>navigation.navigate('Login')}>
-            <Text>Login</Text>
-            </TouchableOpacity>}
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Icon name="menu" size={30} color="white" onPress={() => drawer.current?.openDrawer()}/>
+        <Text style={styles.textStyle}>Stories</Text>
+      </View>
+      {isLogin ?
+  
+          <Text style={styles.textStyle}>{user?.user?.name}</Text>
+      
+        : 
+          <Text style={styles.textStyle}>Login to create stories</Text>
+       }
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-    container:{
-        padding:3,
-        borderRadius:5,
-        backgroundColor:'gray',
-        color:'white',
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center'
-    }
+  container: {
+    padding: 5,
+    borderBottomRightRadius: 5,
+    borderBottomLeftRadius: 5,
+    backgroundColor: 'gray',
+    color: 'white',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width:'100%',
+
+  },
+  textStyle:{
+    color:'white',
+    fontWeight:'500'
+  }
 })

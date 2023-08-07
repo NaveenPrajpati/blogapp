@@ -51,15 +51,24 @@ export default function Login({navigation}) {
     }
   
   
-    async function handle() {
-     
+    const storeData = async (value) => {
+      try {
+        const jsonValue = JSON.stringify(value);
   
+        await AsyncStorage.setItem('user', jsonValue);
+       
+      } catch (e) {
+        // saving error
+      }
+    };
+
+    async function handle() {
      await loginUser({email:email,password:password})
-        .then(async res => {
+        .then(res => {
          console.log(res.data)
           setUser(res.data)
           setIsLogin(true)
-            await AsyncStorage.setItem('user', JSON.stringify(res.data));
+            storeData(res.data)
           
          
           navigation.navigate('Home')
@@ -87,12 +96,15 @@ export default function Login({navigation}) {
 
 
   return (
-    <ScrollView >
-  <TextInput placeholder='email'   onChangeText={(nativeEvent)=>setEmail(nativeEvent)}></TextInput>
-  <TextInput placeholder='password'   onChangeText={(nativeEvent)=>setPassword(nativeEvent)}></TextInput>
-  <TouchableOpacity onPress={handle}>
+    <ScrollView style={{flex:1,}}>
+      <View style={{flexDirection:'column',justifyContent:'center',alignItems:'center',gap:5,padding:10}}>
+
+  <TextInput placeholder='email'   onChangeText={(nativeEvent)=>setEmail(nativeEvent)} style={{width:'100%',padding:2,borderWidth:1}}></TextInput>
+  <TextInput placeholder='password'   onChangeText={(nativeEvent)=>setPassword(nativeEvent)} style={{width:'100%',padding:2,borderWidth:1}}></TextInput>
+  <TouchableOpacity onPress={handle} style={{borderWidth:2,padding:2}}>
     <Text>login</Text>
   </TouchableOpacity>
+      </View>
     </ScrollView>
   )
 }

@@ -1,12 +1,13 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 
 const BaseUrl=`https://blog-backend-c06h.onrender.com/post`;
-//Request interceptors for API calls
+// Request interceptors for API calls
 // axios.interceptors.request.use(
 //   config => {
-//     if(localStorage.getItem('userData'))
-//     config.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('userData')).token}`;
+//     if(AsyncStorage.getItem('user'))
+//     config.headers.Authorization = `Bearer ${JSON.parse(AsyncStorage.getItem('user')).token}`;
 //         return config;
 //     },
 //     error => {
@@ -16,15 +17,15 @@ const BaseUrl=`https://blog-backend-c06h.onrender.com/post`;
 
 const token=()=>{
   
-  if(localStorage.getItem('userData'))
-  return JSON.parse(localStorage.getItem('userData')).token
+  if(AsyncStorage.getItem('user'))
+  return JSON.parse(localStorage.getItem('user')).token
 
  
 }
 
 
   export const savePost =(post)=>{
-        return axios.post(BaseUrl,post);
+        return axios.post(BaseUrl,token,post);
     }
 
   export const getPosts =()=>{
